@@ -1,7 +1,7 @@
 
 
 /*delay på data hentning i ms for at simulere data hentning online*/
-const myLoadTime = 2000;
+const myLoadTime = 3000;
 
 // reset variables
 let myData = null;
@@ -23,40 +23,77 @@ function initApp() {
 
 function createLoadingScreen() {
     // byg loading screen her med html dom elementer. og evt et animeret gif eller billede. i vores app tag.
+    let myLoadingScreen = document.createElement('div');
+    
+    let myLoadingimage = document.createElement('img');
+    myLoadingimage.src = "assets/img/giphyloading.gif";
 
+    myApp.appendChild(myLoadingScreen);
+    myLoadingScreen.appendChild(myLoadingimage);
 }
 
 
 function initGallery(dataRecived) {
     // kaldes fra fetchData når data er klar. 
     // set myData variablen til det modtagne data, så det er tilgængelig for alle funktioner
-    //kald funktionen resetGallery for at slette indhold i app tagget, som er indeholdt i myApp.
+    myData = dataRecived;
+    // kald funktionen resetGallery for at slette indhold i app tagget, som er indeholdt i myApp.
+    resetGallery();
     // kald en funktion der kan bygge dit galleri. den hedder buildGallery
+    buildGallery();
 
 }
 
 
 function resetGallery() {
     // skriv kode her der kan slette alt html i app tagget husk det er indeholdt i  myApp
-
+    myApp.innerHTML = " ";
 }
 
 function buildGallery() {
 
     /* brug map funktionen paa vores myData for at finde data for hvert enkelt dyr, og sende det til en funktion der
     kan bygge dit galleri kort for dyret. funktionen hedder buildCard, og har brugfor data for dyret*/
+    myData.map((element) => {
+        buildCard(element);
+
+    });
+
 }
+
 
 function buildCard(myAnimalData) {
     /* skriv kode der kan vise data fra myAnimalData i DOM
     husk at bruge createElement og appendChild funktionerne til at bygge semantisk korrekt HTML (se evt codelab om dom elementer opgave 4)
     */
 
+    
+    let myArticle = document.createElement('article');
+    myApp.appendChild(myArticle);
+
+    let myH2 = document.createElement('h2');
+    myH2.innerHTML = myAnimalData.name;
+    myArticle.appendChild(myH2);
+
+    let myImage = document.createElement('img');
+    myImage.src = myAnimalData.picture;
+    myImage.alt = myAnimalData.shortDescription;
+    myArticle.appendChild(myImage);
+
+    let myLongDescription = document.createElement('p');
+    myLongDescription.innerHTML = myAnimalData.description;
+    myArticle.appendChild(myLongDescription);
+
+
+    myArticle.classList.add('galleryCard');
+
+    
+
+    
+   
+
 
 }
-
-
-
 
 
 
