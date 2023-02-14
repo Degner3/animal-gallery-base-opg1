@@ -117,7 +117,6 @@ function buildDetailedView(myIndex) {
     resetGallery();
 
     let myBuildCard = document.createElement('article');
-    myBuildCard.style.backgroundColor = "pink";
 
     myBuildCard.setAttribute('data-index', myIndex);
 
