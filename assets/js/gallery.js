@@ -54,47 +54,101 @@ function buildGallery() {
 
     /* brug map funktionen paa vores myData for at finde data for hvert enkelt dyr, og sende det til en funktion der
     kan bygge dit galleri kort for dyret. funktionen hedder buildCard, og har brugfor data for dyret*/
-    myData.map((element) => {
-        buildCard(element);
+    
+    resetGallery();
 
+    myIndex = 0;
+    myData.map((myAnimal) => {
+
+        buildCard(myAnimal, myIndex);
+        myIndex++;
     });
-
 }
 
 
-function buildCard(myAnimalData) {
+function buildCard(myAnimalData, myIndex) {
     /* skriv kode der kan vise data fra myAnimalData i DOM
     husk at bruge createElement og appendChild funktionerne til at bygge semantisk korrekt HTML (se evt codelab om dom elementer opgave 4)
     */
 
-    
     let myArticle = document.createElement('article');
-    myApp.appendChild(myArticle);
+    
+    myArticle.setAttribute('data-index', myIndex);
+
+    myArticle.classList.add('galleryCard');
+    // galleryCard.style.cursor = 'Pointer';
+
+    myArticle.addEventListener('click', (e) => {
+
+        e.stopPropagation();
+        // console.log(e.target);
+        myIndex = e.currentTarget.dataset.index;
+        // console.log(e.ccurrentTarget);
+        buildDetailedView(myIndex);
+
+    })
 
     let myH2 = document.createElement('h2');
     myH2.innerHTML = myAnimalData.name;
-    myArticle.appendChild(myH2);
+    
 
     let myImage = document.createElement('img');
     myImage.src = myAnimalData.picture;
     myImage.alt = myAnimalData.shortDescription;
-    myArticle.appendChild(myImage);
+    
 
     let myLongDescription = document.createElement('p');
-    myLongDescription.innerHTML = myAnimalData.description;
+    myLongDescription.innerHTML = myAnimalData.shortDescription;
+    
+
+    myArticle.appendChild(myH2);
+    myArticle.appendChild(myImage);
     myArticle.appendChild(myLongDescription);
 
-
-    myArticle.classList.add('galleryCard');
-
-    
-
-    
-   
-
+    myApp.appendChild(myArticle);
 
 }
 
+
+function buildDetailedView(myIndex) {
+
+    let myAnimalData = myData[myIndex];
+
+    resetGallery();
+
+    let myBuildCard = document.createElement('article');
+    myBuildCard.style.backgroundColor = "pink";
+
+    myBuildCard.setAttribute('data-index', myIndex);
+
+    myBuildCard.classList.add('detailView');
+    // buildCard.style.cursor = 'Pointer';
+
+    myBuildCard.addEventListener("click", (e) => {
+
+        e.stopPropagation();
+        buildGallery();
+    });
+
+    let myH2 = document.createElement('h2');
+    myH2.innerHTML = myAnimalData.name;
+
+    let myImage = document.createElement('img');
+    myImage.src = myAnimalData.picture;
+    myImage.alt = myAnimalData.name;
+
+    let myLongDescription = document.createElement('p');
+    myLongDescription.innerHTML = myAnimalData.description;
+
+
+    myApp.appendChild(myBuildCard);
+
+    myBuildCard.appendChild(myH2);
+    myBuildCard.appendChild(myImage);
+    myBuildCard.appendChild(myLongDescription);
+
+
+}
 
 
 
